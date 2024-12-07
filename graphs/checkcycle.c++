@@ -120,3 +120,48 @@
         g.dfs(0,vis);
         cout<<"hello";  
   }
+
+
+bool checkCyclePresent(int src, unordered_map<int, vector<int>>& adjList) {
+    queue<int> q;
+    unordered_map<int, bool> visited;
+    unordered_map<int, int> parent;
+    
+    q.push(src);
+    visited[src] = true;
+    parent[src] = -1;
+
+    while (!q.empty()) {
+        int frontNode = q.front();
+        q.pop();
+
+        // Traverse neighbors of the current node
+        for (auto nbr : adjList[frontNode]) {
+            if (!visited[nbr]) {
+                visited[nbr] = true;
+                q.push(nbr);
+                parent[nbr] = frontNode;
+            } 
+            // If neighbor is visited and not parent, there's a cycle
+            else if (nbr != parent[frontNode]) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+// Wrapper for disconnected graph handling
+bool isCycleInGraph(unordered_map<int, vector<int>>& adjList) {
+    unordered_map<int, bool> visited;
+
+    for (auto& node : adjList) {
+        int src = node.first;
+        if (!visited[src]) {
+            if (checkCyclePresent(src, adjList)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
