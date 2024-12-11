@@ -25,4 +25,6 @@ int main(){
     
     Animal *a=new Dog;
     a->speak();
+
+    cout<<'5'+1;
 }
